@@ -69,7 +69,7 @@ confundidor: posibles familiares con esta situación, que puede provocar una her
 
 Edad: El documento nos muestra un estudio que compara la media de la edad que usan o no los teléfonos móviles. En este contraste se obtiene que las medias son diferentes, aunque la dispersión es muy alta.
 
-Actividad física: hacen un estudio sobre el metabolismo para ver como afecta la actividad física a la tenencia o no de esta enfermedad. En el estudio se mira si ambas puntuaciones son iguales o no y se concluye que son son diferentes, rechazamos la hipíotesis nula.
+Actividad física: hacen un estudio sobre el metabolismo para ver como afecta la actividad física a la tenencia o no de esta enfermedad. En el estudio se mira si ambas puntuaciones son iguales o no y se concluye que son son diferentes, rechazamos la hipíotesis nula. Mayor dispersión en el grupo que no usa el telefono que en el que si
 
 Utilizar otras cosas, leer periodicos: La gente que utiliza el teléfono, no solo lo usa sino que también hace otras cosas. Se hizo un contraste y las personas que lo usaban es mayor.
 
