@@ -67,7 +67,7 @@ confundidor: posibles familiares con esta situación, que puede provocar una her
 
 #### 5. Con base en la Tabla 1 del artículo, interpretad en el contexto del problema las características que resultaron estadísticamente significativas (1.5 puntos)
 
-Edad: El documento nos muestra un estudio que compara la media de la edad que usan o no los teléfonos móviles. En este contraste se obtiene que las medias son diferentes.
+Edad: El documento nos muestra un estudio que compara la media de la edad que usan o no los teléfonos móviles. En este contraste se obtiene que las medias son diferentes, aunque la dispersión es muy alta.
 
 Actividad física: hacen un estudio sobre el metabolismo para ver como afecta la actividad física a la tenencia o no de esta enfermedad. En el estudio se mira si ambas puntuaciones son iguales o no y se concluye que son son diferentes, rechazamos la hipíotesis nula.
 
