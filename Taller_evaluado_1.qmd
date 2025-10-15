@@ -25,30 +25,64 @@ lang: es
 
 
 #### 1. ¿Cuál es la pregunta de investigación o hipótesis principal? (1 punto)
-¿La utilización de teléfonos inteligentes en el cuarto de baño da lugar a hemorroides?
+
+¿La utilización de teléfonos inteligentes en el cuarto de baño aumenta la probabilidad de desarrollar hemorroides?
+
 
 #### 2. Definid: población objetivo, población muestreada, unidad de observación, muestra y tipo de muestreo (2 puntos)
 
 Población objetivo: Personas adultas
 
-Poblacion muestreada: Personas adultas someti
+Poblacion muestreada: Personas adultas que se iban a someter a una colonoscopia en Beth Israel Deaconess Medical Center (BIDMC) entre las fechas 01/08/2024–15/12/2024 y que previamente habían completado el cuestionario correspondiente. 
 
-Unidad de observación Cada persona adulta que ha formado parte del experimento
+Unidad de observación: Cada persona adulta que ha formado parte del experimento
 
-Muestra: 125
+Muestra: 125 adultos con las características mencionadas antes y que se somentieron a la colonoscopia
 
-Tipo de muestreo: 
+Tipo de muestreo: Muestreo por conveniencia ya que participan los pacientes que quieren
 
 #### 3. Identificad el tipo de estudio, justificad vuestra respuesta (1.5 puntos)
 
+Como se busca una relación entre el uso de los teléfonos inteligentes en el cuarto de baño y la aparición de hemorroides, el estudio es analítico. Dentro de los estudios analíticos, vemos que el estudio es observacional, ya que solo se registran datos mediante la encuesta, y los investigadores no provocan cambios en el estudio. 
+
+Dentro de  los estudios observacionales, es un estudio transversal, ya que los factores se evalúan a la vez que la enfermedad. Los factores se evalúan mediante la encuesta, y la enfermedad mediante la colonoscopia.
 
 #### 4. Indicad al menos tres posibles sesgos y/o factores de confunción que podrían afectar los resultados del estudio (2 puntos)
 
+En este análisis detectamos lo siguiente: 
+Sesgo de eleccion
+
+Sesgo voluntario
+
+Sesgo de recuerdo
+
+Su diseño transversal no permite establecer la causalidad.
+
+La subjetividad en la documentación de hemorroides en los informes de colonoscopía.
+
+Sesgo de muestreo, mayores de 45. Personas de menos de 45 que utilizan mas las tecnología
+
+confundidor: posibles familiares con esta situación, que puede provocar una herencia de esta enfermedad.
+
+
 #### 5. Con base en la Tabla 1 del artículo, interpretad en el contexto del problema las características que resultaron estadísticamente significativas (1.5 puntos)
+
+Edad: El documento nos muestra un estudio que compara la media de la edad que usan o no los teléfonos móviles. En este contraste se obtiene que las medias son diferentes.
+
+Actividad física: hacen un estudio sobre el metabolismo para ver como afecta la actividad física a la tenencia o no de esta enfermedad. En el estudio se mira si ambas puntuaciones son iguales o no y se concluye que son son diferentes, rechazamos la hipíotesis nula.
+
+Utilizar otras cosas, leer periodicos: La gente que utiliza el teléfono, no solo lo usa sino que también hace otras cosas. Se hizo un contraste y las personas que lo usaban es mayor.
+
+No hacer nada más: En esta comparacion los que usan el telefono no tienen ningún representante por tanto va a salir que son diferentes y no tiene sentido realizar este estudio, ya que el resultado era obvio.
+
 
 #### 6. Con base en la Figura 5, discutid si el gráfico empleado es correcto y proponed, en su caso, mejoras que faciliten la interpretación (1 punto)
 
+El gráfico es correcto, ya que es un diagrama de frecuencias de una variable cualitativa, en este caso las diferentes actividades que las personas encuestadas realizan con el smartphone en el baño.
+
 #### 7. Explica, de forma breve y basada en esta evidencia, si recomendarías evitar o limitar el uso del smartphone en el inodoro a tus amigos (jóvenes menores de 25 años), indicando por qué, cómo (1 punto)
+
+Le diría a mis amigos que deberían revisar si su tiempo en el baño se ve alargado debido al uso del móvil, lectura de las notícias o libros. Y de ser la respuesta afirmativa, les recomendaría limitar el uso. También les sugeriría llevar una vida activa.
 
 
 <br>
