@@ -1,0 +1,164 @@
+---
+title: "Ejercicios de estimación y contrastes multivariantes"
+subtitle: "23217- Análisis de Datos para el GMAT"
+date: today
+format: 
+  html:
+    theme: lumen
+    toc: true
+    toc-depth: 3
+Rendering:
+    embed-resources: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+
+
+
+## Problema 4
+
+Una empresa desea comprobar si el perfil medio de sus trabajadores en cuanto a  
+rendimiento ($X_1$) y satisfacción laboral ($X_2$) coincide con los valores de referencia establecidos por la dirección:
+
+$$
+\boldsymbol{\mu}_0 =
+\begin{pmatrix}
+70\\
+7
+\end{pmatrix}.
+$$
+
+Para ello, se selecciona una muestra aleatoria de tamaño $n$ de empleados y se registran sus puntuaciones en ambas variables. Se asume que el vector de observaciones
+
+$$
+\mathbf{X} = (X_1, X_2)^\top
+$$
+
+sigue una distribución normal bivariante
+
+$$
+\mathbf{X} \sim N_2(\boldsymbol{\mu}, \boldsymbol{\Sigma}),
+$$
+
+con matriz de covarianzas desconocida $\boldsymbol{\Sigma}$.
+
+Se desea contrastar la hipótesis
+
+$$
+H_0: \boldsymbol{\mu} = \boldsymbol{\mu}_0
+\quad \text{frente a} \quad
+H_1: \boldsymbol{\mu} \neq \boldsymbol{\mu}_0,
+$$
+
+(a) Genera una muestra simulada de tamaño $n$ de la distribución $N_2(\boldsymbol{\mu}, \boldsymbol{\Sigma})$ (elige unos valores razonables para $\boldsymbol{\mu}$ y $\boldsymbol{\Sigma}$).
+
+(b) Calcula la media muestral $\bar{\mathbf{X}}$, la matriz de covarianzas $\mathbf{S}$ y el estadístico de Hotelling $T^2$.
+
+(c) Transforma $T^2$ a la escala F usando la distribución $F_{p,\,n-p}$ y calcula el p-valor del contraste para un nivel de significación $\alpha = 0.05$.
+
+(d) Decide si se rechaza o no $H_0$.
+
+(e) Interpreta el resultado en el contexto del problema: ¿parece que el vector medio real de la población difiere de $\boldsymbol{\mu}_0$?
+
+### Solución
+
+(a) Vamos a generar una muesttra de tamaño $n = 100$ que siga una distribución $N_2(\boldsymbol{\mu}, \boldsymbol{\Sigma)$. 
+
+```{r}
+library(MASS)
+
+set.seed(4627)
+
+# tamañoo de la muestra
+n <- 100
+
+# tenemos dos variables
+p<- 2 
+
+# vector de dirección
+mu <- c(72, 8)
+sigma <- matrix(c(400, 9,
+                  9,  4), nrow = 2, byrow = TRUE)
+correlacion=9/(20*2)
+correlacion
+
+muestra <- mvrnorm(n,mu,sigma)
+plot(muestra)
+```
+
+Estos valores tienen sentido, ya que el rendimiento suele tener más variabilidad que la satisfacción, las covarianzas son positivas, lo cual tiene sentido considerando nuestras variables rendimiento y satisfacción laboral. Además, la correlación en este caso es $Cov(x1,x2)/sd(x1)*sd(x2)=0.225$ , o sea una correlación positiva entre ambas variables, que tiene sentido, ya que podemos deducir que cuanto más rendimiento hay, mayor satisfacción laboral tiene el empleado
+
+(b) Vamos ahora a calcular la media muestral, 
+
+```{r}
+media_col <- colMeans(muestra)
+media_col
+
+```
+Calculamos la matriz de covarianza,
+
+```{r}
+covar <- cov(muestra)
+covar
+```
+
+Calculamos el estadístico de Hotelling,
+
+```{r}
+# diferencia de medias
+delta <- media_col - mu
+delta
+
+
+T2 <- as.numeric(n * t(delta) %*% solve(covar) %*% delta)
+T2
+```
+
+
+(c) Vamos a transformar el estadístico a la escala de F. Sabemos que: 
+
+$$
+T^2 = n (\bar{\mathbf{X}} - \boldsymbol{\mu}_0)^\top \mathbf{S}^{-1} (\bar{\mathbf{X}} - \boldsymbol{\mu}_0)
+$$
+$$
+F = \frac{n - p}{p (n - 1)} T^2 \sim F_{p,\, n-p}
+$$
+
+Por lo que, podemos aproximar la $T^2$ por una fisher $F_{2,\,98}$: 
+
+$$
+F = \frac{100 - 2}{2·99} T^2 \sim F_{2,\, 98}
+$$
+
+```{r}
+F_dist <- ((n - p) / (p * (n - 1)))*T2
+F_dist
+```
+
+Calculamos el p-valor con un nivel de significación $\alpha = 0.05$,
+
+```{r}
+df1 <- p
+df2 <- n - p
+p_valor <- 1 - pf(F_dist, df1, df2)
+p_valor
+```
+
+```{r}
+alpha <- 0.05
+F_crit <- qf(1 - alpha, df1, df2)
+F_crit
+reject <- (p_valor < alpha)
+reject
+```
+
+(d) Decide si se rechaza o no $H_0$.
+
+Podemos deducir con el p-valor que no tenemos indicios de rechazar la hipóteisis nula ya que es bastante grande.
+
+(e) Interpreta el resultado en el contexto del problema: ¿parece que el vector medio real de la población difiere de $\boldsymbol{\mu}_0$?
+
+Como el p-valor es alto ($p = 0.355$), no rechazamos $H_0$ al nivel de significación $\alpha = 0.05$. Esto indica que no hay evidencia estadística suficiente para afirmar que el vector medio $\boldsymbol{\mu}$ de la población difiere de $\boldsymbol{\mu}_0$.
