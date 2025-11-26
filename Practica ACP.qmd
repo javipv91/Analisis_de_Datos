@@ -1,0 +1,311 @@
+---
+title: "Ejercicio PCA"
+format: html
+editor: visual
+---
+
+## Problema 2
+
+En el siguiente [enlace](https://github.com/igmuib/Practica_AD/blob/main/problema1_ACP.csv) encontraréis datos de España correspondientes al año 2021, organizados en 7 variables: 4 relacionadas con el uso de las tecnologías de la información y la comunicación (TIC) en las empresas, y 3 vinculadas al uso de estas tecnologías por la población y al equipamiento tecnológico de los hogares. Las variables registradas son las siguientes:
+
+`ebroad`: porcentaje de empresas con acceso a Internet de banda ancha.
+
+`esales`: porcentaje de empresas que realizan ventas electrónicas.
+
+`esocmedia`: porcentaje de empresas que utilizan redes sociales.
+
+`eweb`: porcentaje de empresas con sitio web.
+
+`hbroad`: porcentaje de hogares con acceso a Internet de banda ancha.
+
+`hiacc`: porcentaje de hogares con acceso general a Internet, independientemente del tipo de conexión.
+
+`iuse`: porcentaje de individuos que utilizan Internet.
+
+### a. Realizad un análisis exploratorio de los datos, acompañado de un resumen de las observaciones más relevantes en relación con el contexto del problema, para ello crea una variable `region` con los siguientes niveles:
+
+-   Europa Occidental" = c("BE", "FR", "DE", "AT", "NL", "LU", "IE"),
+
+-   Europa del Sur" = c("ES", "IT", "PT", "EL", "CY", "MT"),
+
+-   "Europa del Este" = c("CZ", "BG", "HU", "PL", "RO", "SK"),
+
+-   "Países Nórdicos" = c("DK", "SE", "FI", "NO"),
+
+-   "Países Bálticos" = c("EE", "LV", "LT")
+
+Aseguraos de incluir, un análisis de la matriz de correlaciones.
+
+#### Respuesta
+
+```{r}
+
+dataframe <- read.csv("~/Desktop/problema1_ACP.csv")
+
+head(dataframe)
+
+
+library(dplyr)
+library(GGally)
+
+datos <- dataframe %>%
+  mutate(region = case_when(
+    X %in% c("BE", "FR", "DE", "AT", "NL", "LU", "IE") ~ "Europa Occidental",
+    X %in% c("ES", "IT", "PT", "EL", "CY", "MT") ~ "Europa del Sur",
+    X %in% c("CZ", "BG", "HU", "PL", "RO", "SK") ~ "Europa del Este",
+    X %in% c("DK", "SE", "FI", "NO") ~ "Países Nórdicos",
+    X %in% c("EE", "LV", "LT") ~ "Países Bálticos",
+  ))
+
+datos=datos[, -1]
+
+head(datos)
+
+
+```
+Si nos fijamos en los datos de cada una ya nos anticipa que no podremos usar la matriz de varianzas/covarianzas ya que las escalas de las variables son diferentes. Se puede ver que para ebroad, hbroad, hiacc, iuse los valores estan entre 80% y 100%, en cambio esales tiene un valor mucho mas bajo, entre 10% y 30%. 
+
+Ahora comprobamos que no haya ningun valor NA en el dataframe, eliminamos aquellas muestras que contengan algún valor NA.
+
+```{r}
+sum(is.na(datos))
+
+datos_sin_NA<- na.omit(datos)
+
+head(datos_sin_NA)
+
+vars=datos_sin_NA %>% select(where(is.numeric))
+ggpairs(vars,progress = FALSE)
+```
+
+Ahora continuamos con el análisis exploratorio de los datos: 
+
+```{r}
+datos_Occidental <- datos_sin_NA %>% 
+  filter(region == "Europa Occidental")
+
+datos_Sur <- datos_sin_NA %>% 
+  filter(region == "Europa del Sur")
+
+datos_Este <- datos_sin_NA %>% 
+  filter(region == "Europa del Este")
+
+datos_Nordicos <- datos_sin_NA %>% 
+  filter(region == "Países Nórdicos")
+
+datos_Balticos <- datos_sin_NA %>% 
+  filter(region == "Países Bálticos")
+```
+
+
+Vamos a mirar las correlaciones dentro de cada región,
+
+```{r}
+library(GGally)
+
+# Europa Occidental
+vars_occ <- datos_Occidental %>% select(where(is.numeric))
+ggpairs(vars_occ,progress = FALSE) + ggtitle("Europa Occidental")
+
+# Europa del Este
+vars_est <- datos_Este %>% select(where(is.numeric))
+ggpairs(vars_est,progress = FALSE) + ggtitle("Europa del Este")
+
+# Europa del Sur
+vars_sur <- datos_Sur %>% select(where(is.numeric))
+ggpairs(vars_sur,progress = FALSE) + ggtitle("Europa del Sur")
+
+# Países Bálticos
+vars_bal <- datos_Balticos %>% select(where(is.numeric))
+ggpairs(vars_bal,progress = FALSE) + ggtitle("Países Bálticos")
+
+# Países Nórdicos
+vars_nor <- datos_Nordicos %>% select(where(is.numeric))
+ggpairs(vars_nor,progress = FALSE) + ggtitle("Países Nórdicos")
+```
+
+
+Ahora vamos a estudiar las correlaciones entre los distintos grupos,
+```{r}
+
+datos_2 <- datos_sin_NA %>% group_by(region)
+vars_total <- datos_2 %>% select(where(is.numeric))
+ggpairs(vars_total,progress = FALSE)
+
+```
+
+```{r}
+
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+datos_plot <- datos %>%
+  mutate(region_abbrev = case_when(
+    region == "Europa Occidental" ~ "EOcc",
+    region == "Europa del Sur" ~ "ESur",
+    region == "Europa del Este" ~ "EEste",
+    region == "Países Nórdicos" ~ "Nord",
+    region == "Países Bálticos" ~ "Balt",
+    TRUE ~ region
+  ))
+
+datos_plot %>%
+  pivot_longer(cols = 1:7, names_to = "Variable", values_to = "Value") %>%
+  mutate(Variable = recode(Variable,
+    ebroad = "Empresas banda ancha",
+    esales = "Ventas electrónicas(Empresas)",
+    eweb = "Web(Empresas)",
+    esocmedia = "Redes sociales (Empresas)",
+    hbroad = "Hogares banda ancha",
+    hiacc = "Hogares Internet",
+    iuse = "Individuos"
+  )) %>%
+  ggplot(aes(x = region_abbrev, y = Value, fill = region_abbrev)) +   
+  geom_boxplot() +
+  facet_wrap(~Variable, scales = "free") +                             
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    legend.position = "none"  
+  )
+
+  
+```
+
+Como podemos ver las empresas están muy digitalizadas, con más del 80% teniendo Internet, web y redes sociales. Los hogares tienen un nivel intermedio, con alrededor del 50% teniendo acceso a Internet. En cambio, los individuos usan poco Internet, entre el 10% y el 30%. Esto muestra que la tecnología está disponible, pero todavía no todos la usan a nivel personal. 
+
+En conclusión: 
+Las empresas están muy digitalizadas, con Internet y tecnología usada casi en todas. Los hogares tienen acceso a Internet, pero solo la mitad lo tiene, así que no todos pueden usarlo. Las personas usan poco Internet, aunque la tecnología en empresas y hogares ya está disponible.
+
+### b. Realizad una reducción del número de variables utilizando un Análisis de Componentes Principales (PCA). Justificad si trabajaréis con la matriz de covarianzas o la de correlaciones, considerando las características de los datos. Evaluad la idoneidad de la reducción propuesta, indicando claramente el criterio empleado para seleccionar el número de componentes principales a retener. Finalmente, interpretad las componentes principales seleccionadas, describiendo qué representan en el contexto de los datos y cómo contribuyen al análisis.
+
+#### Respuesta
+
+Como hemos dicho antes, si nos fijamos en los datos de cada una ya nos anticipa que no podremos usar la matriz de varianzas/covarianzas ya que las escalas de las variables son diferentes. Se puede ver que para ebroad, hbroad, hiacc, iuse los valores estan entre 80% y 100%, en cambio esales tiene un valor mucho mas bajo, entre 10% y 30%.
+
+En un PCA, cuando las variables presentan diferentes variabilidades, la matriz de covarianzas no es adecuada, porque las variables con mayor varianza dominarían las componentes.
+
+Vamos a realizar un PCA para reducir a 3 variables las 7 que tenemos. Lo haremos agrupando en empresas, hogares e individuos.
+```{r}
+
+# Variables por sector
+empresas <- datos_sin_NA[, c("ebroad","esales","esocmedia","eweb")]
+hogares  <- datos_sin_NA[, c("hbroad","hiacc")]
+individuos <- datos_sin_NA[, c("iuse")]
+
+# Estandarizamos cada bloque
+empresas_scaled   <- scale(empresas)
+hogares_scaled    <- scale(hogares)
+individuos_scaled <- scale(individuos)
+
+
+# Empresas
+pca_emp <- prcomp(empresas_scaled, scale. = FALSE)
+cp_emp <- pca_emp$x[,1]  # CP del sector empresas
+
+# Hogares
+pca_hog <- prcomp(hogares_scaled, scale. = FALSE)
+cp_hog <- pca_hog$x[,1]  # CP del sector hogares
+
+# Individuos
+pca_ind <- prcomp(individuos_scaled, scale. = FALSE)
+cp_ind <- pca_ind$x[,1]  # CP del sector individuos
+
+```
+
+
+Ahora vamos a mostrar como construimos cada componente principal a partir de las 7 variables originales.
+
+
+```{r}
+# Añade esto antes de pca$rotation
+datos_numericos <- datos_sin_NA %>% 
+  select(ebroad, esales, esocmedia, eweb, hbroad, hiacc, iuse)
+
+pca <- prcomp(datos_numericos, scale = TRUE)
+pca$rotation
+```
+```{r}
+pca_sectores <- data.frame(
+  CP_Hogares = cp_hog,
+  CP_Individuos = cp_ind,
+  CP_Empresas = cp_emp,
+  region = datos_sin_NA$region
+)
+head(pca_sectores)
+```
+CP_Empresas: Esta componente nos dice qué tan digitalizadas están las empresas en cada región. Combina tres aspectos importantes, si tienen banda ancha, si venden por internet, si tienen página web y si usan redes sociales. Cuando esta componente tiene un valor alto, significa que las empresas de esa región están muy avanzadas en tecnología.
+
+CP_Hogares: Esta componente mide qué tan conectados están los hogares. Tiene en cuenta dos cosas: si tienen banda ancha en casa y si pueden acceder a internet. Un valor alto indica que en esa región los hogares tienen buena conexión a internet.
+
+CP_Individuos: Esta componente es más simple, ya que solo mide qué tanto usa internet la gente en su vida diaria. Nos muestra si las personas de cada región aprovechan las herramientas digitales disponibles.
+
+Hemos simplificado el análisis pasando de 7 medidas diferentes a solo 3 conceptos clave, ya que es más fácil trabajar con 3 componentes que con 7 variables separadas.Cada componente tiene un significado claro y fácil de entender. 
+
+La tabla nos muestra cómo está la tecnología en diferentes zonas de Europa.
+
+En Europa del Este, las empresas tienen buena tecnología y las casas tienen internet, pero la gente no lo usa mucho. Tienen las herramientas, pero no las aprovechan.
+
+En los Países Nórdicos pasa al revés: la gente usa mucho internet, pero las empresas no tienen buena tecnología y en las casas hay poca conexión.
+
+PAra terminar vamos a representar el gráfico 3D resultante:
+
+```{r}
+library(plotly)
+
+# Suponiendo que tienes el PCA por bloques con 3 componentes
+# pca_sectores: CP_Hogares, CP_Individuos, CP_Empresas
+plot_ly(pca_sectores, 
+        x = ~CP_Hogares, 
+        y = ~CP_Individuos, 
+        z = ~CP_Empresas,
+        color = ~region,
+        colors = c("#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd"),
+        type = "scatter3d",
+        mode = "markers") %>%
+  layout(scene = list(
+    xaxis = list(title = "CP Hogares"),
+    yaxis = list(title = "CP Individuos"),
+    zaxis = list(title = "CP Empresas")
+  ))
+
+```
+
+Ahora lo vamos a resolver de otra manera, haciendo un PCA con 2 componentes principales: 
+Aunque los valores están todos en la misma escala, ya que son porcentajes, presentan variabilidad entre ellos, por lo que consideraremos la matriz de correlaciones pra trabajar.
+```{r,warning=FALSE,message=FALSE}
+library(dplyr)
+
+datos_numericos <- datos_sin_NA %>% 
+  select(ebroad, esales, esocmedia, eweb, hbroad, hiacc, iuse)
+
+
+library(factoextra)
+pca <- prcomp(datos_numericos, scale = TRUE)
+lambdas <- get_eigenvalue(pca)
+lambdas
+```
+
+Como podemos observar, hay una componente principal con un valor propio muy alto, y que, por lo tanto, acumula casi todo el porcentaje de la varianza, otra componente con valor propio superior a 1, que representa más de un 15% de la varianza, y otras 5 componentes principales que podemos considerar prácticamente despreciables (en todas el valor propio es bastante inferior a 1. Nos quedamos con las 2 primeras componentes principales, que representan el 80% de la varianza total.
+
+```{r}
+pca$rotation
+
+```
+Como hemos visto antes, las 2 primeras componentes principales son las que acumulan la mayoría de la varianza total (un 82%). En la primera componente, vemos que es una combinación lineal de las 7 primeras variables con un peso más o menos similar para cada variable. Por otro lado, la segunda componente le da un mayor peso a las ventas electrónicas realizadas por empresas y a las variables relacionadas con la electrónica en hogares.
+
+```{r}
+library("factoextra")
+fviz_pca_biplot(pca,repel=TRUE)
+
+```
+En este biplot vemos lo siguiente:
+
+Las direcciones de las flechas que representan las variables son todas negativas respecto a la primera componente, y las de las variables iuse, hbroad e hiacc son negativas respecto a la segunda componente, tal y como hemos visto en la matriz anterior.
+
+Por otro lado, la variable esales está prácticamente incorrelacionada con las variables hiacc y hbroad, ya que sus direcciones son prácticamente otrogonales (de hecho, sus correlaciones son 0.16 y 0.19, respectivamente, los valores más bajos de la matriz de correlaciones).
+
+Tal y como hemos dicho antes, las variables relacionadas con la electrónica en hogares y la variable esales son las que tienen mayor peso en la segunda componente, ya que las flechas del resto de variables están muy cerca del eje de la segunda componente, mientras que no hay ninguna flecha muy cercana al eje vertical, ya que la primera componente daba un peso más o menos considerable a todas las variables.
+
+
