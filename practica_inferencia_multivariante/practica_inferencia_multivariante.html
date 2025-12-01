@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-11-09">
+<meta name="dcterms.date" content="2025-11-12">
 
 <title>Ejercicios de estimación y contrastes multivariantes</title>
 <style>
@@ -111,12 +111,9 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#problema-1" id="toc-problema-1" class="nav-link active" data-scroll-target="#problema-1">Problema 1</a>
+  <li><a href="#problema-4" id="toc-problema-4" class="nav-link active" data-scroll-target="#problema-4">Problema 4</a>
   <ul class="collapse">
-  <li><a href="#problema-2" id="toc-problema-2" class="nav-link" data-scroll-target="#problema-2">Problema 2</a></li>
-  <li><a href="#problema-3" id="toc-problema-3" class="nav-link" data-scroll-target="#problema-3">Problema 3</a></li>
-  <li><a href="#problema-4" id="toc-problema-4" class="nav-link" data-scroll-target="#problema-4">Problema 4</a></li>
-  <li><a href="#problema-5" id="toc-problema-5" class="nav-link" data-scroll-target="#problema-5">Problema 5</a></li>
+  <li><a href="#solución" id="toc-solución" class="nav-link" data-scroll-target="#solución">Solución</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -137,7 +134,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 9, 2025</p>
+      <p class="date">November 12, 2025</p>
     </div>
   </div>
   
@@ -149,130 +146,6 @@ window.Quarto = {
 </header>
 
 
-<section id="problema-1" class="level1">
-<h1>Problema 1</h1>
-<p>Una empresa de marketing realizó una encuesta a 500 clientes para conocer sus preferencias entre tres productos: A, B y C. Los resultados fueron los siguientes:</p>
-<ul>
-<li>Producto A: 200 clientes lo prefieren.</li>
-<li>Producto B: 150 clientes lo prefieren.</li>
-<li>Producto C: 150 clientes lo prefieren.</li>
-</ul>
-<ol type="a">
-<li><p>Define un modelo multinomial para las preferencias de los clientes. Estima los parámetros del modelo.</p></li>
-<li><p>Utiliza el modelo para estimar la probabilidad de que en una muestra de 10 clientes, 5 prefieran el producto A, 3 prefieran el producto B y 2 prefieran el producto C. Utiliza R para hacer los cálculos.</p></li>
-<li><p>Simula 1000 muestras aleatorias de tamaño 10 y calcula cuántas veces ocurre cada combinación de preferencias. Calcula la frecuencia con la que aparece cada combinación de preferencias en las simulaciones. Compara la probabilidad teórica calculada en el apartado b con la frecuencia observada en las simulaciones.</p></li>
-</ol>
-<section id="problema-2" class="level2">
-<h2 class="anchored" data-anchor-id="problema-2">Problema 2</h2>
-<p>Una organización ambiental está interesada en modelar los niveles de contaminación en una ciudad, tomando en cuenta dos variables: la cantidad de emisiones industriales (en toneladas) y la densidad de tráfico (número de vehículos por kilómetro cuadrado). Se ha tomado una muestra de <span class="math inline">\(n=5\)</span> días en los que se midieron estas variables, junto con los niveles de contaminación registrados (en partículas por millón). Los datos son los siguientes:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 39%">
-<col style="width: 35%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Contaminación (Y)</th>
-<th>Emisiones Industriales (X1)</th>
-<th>Densidad de Tráfico (X2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>50</td>
-<td>200</td>
-<td>150</td>
-</tr>
-<tr class="even">
-<td>60</td>
-<td>240</td>
-<td>170</td>
-</tr>
-<tr class="odd">
-<td>55</td>
-<td>220</td>
-<td>160</td>
-</tr>
-<tr class="even">
-<td>52</td>
-<td>210</td>
-<td>155</td>
-</tr>
-<tr class="odd">
-<td>58</td>
-<td>230</td>
-<td>165</td>
-</tr>
-</tbody>
-</table>
-<p>Supón que los datos siguen un modelo de regresión multivariante del tipo:</p>
-<p><span class="math display">\[
-Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon
-\]</span></p>
-<p>Donde <span class="math inline">\(Y\)</span> es el vector de niveles de contaminación, <span class="math inline">\(X_1\)</span> es el vector de emisiones industriales, <span class="math inline">\(X_2\)</span> es la densidad de tráfico, y <span class="math inline">\(\epsilon\)</span> es el término de error.</p>
-<p>Calcula la función de score e interpreta el resultado en este contexto ambiental</p>
-</section>
-<section id="problema-3" class="level2">
-<h2 class="anchored" data-anchor-id="problema-3">Problema 3</h2>
-<p>Una clínica está realizando un estudio para evaluar la eficacia de un nuevo tratamiento médico para reducir la presión arterial. Se selecciona una muestra de <span class="math inline">\(n = 10\)</span> pacientes y se mide la disminución de la presión arterial (en mmHg) después de aplicar el tratamiento. El cambio en la presión arterial se modela mediante una distribución normal con media <span class="math inline">\(\mu\)</span> y varianza <span class="math inline">\(\sigma^2\)</span>.</p>
-<p>Las disminuciones observadas en la presión arterial de los pacientes son las siguientes (en mmHg):</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Paciente</th>
-<th>Disminución (Y)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>12</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>8</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>10</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>15</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>7</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>9</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>14</td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>11</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td>13</td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td>6</td>
-</tr>
-</tbody>
-</table>
-<p>Se asume que los datos provienen de una distribución normal <span class="math inline">\(Y_i \sim N(\mu, \sigma^2)\)</span>.</p>
-<ol type="a">
-<li><p>¿Cuáles son las estimaciones de máxima verosimilitud para <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma^2\)</span> en este modelo?</p></li>
-<li><p>Calcula la matriz de información de Fisher para los parámetros <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma^2\)</span> en este modelo e interpreta los resultados.</p></li>
-</ol>
-</section>
 <section id="problema-4" class="level2">
 <h2 class="anchored" data-anchor-id="problema-4">Problema 4</h2>
 <p>Una empresa desea comprobar si el perfil medio de sus trabajadores en cuanto a<br>
@@ -300,48 +173,122 @@ H_0: \boldsymbol{\mu} = \boldsymbol{\mu}_0
 H_1: \boldsymbol{\mu} \neq \boldsymbol{\mu}_0,
 \]</span></p>
 <ol type="a">
-<li>Genera una muestra simulada de tamaño <span class="math inline">\(n\)</span> de la distribución <span class="math inline">\(N_2(\boldsymbol{\mu}, \boldsymbol{\Sigma})\)</span> (elige unos valores razonables para <span class="math inline">\(\boldsymbol{\mu}\)</span> y <span class="math inline">\(\boldsymbol{\Sigma}\)</span>).</li>
-</ol>
-<p>Para escoger los valores de la media y la matriz de varianzas/covarianzas tenemos que tener en cuenta lo siguiente:</p>
-<p>Supongamos que estamos bajo las hipótesis de H_{0}</p>
-<p>Por lo que podemos suponer que la matriz de varianzas covarianzas y la media son:</p>
-<p><span class="math display">\[
-\boldsymbol{\mu}_0 =
-\begin{pmatrix}
-70\\
-7
-\end{pmatrix}.
-\]</span></p>
-<p><span class="math display">\[\boldsymbol{\Sigma}
-=\begin{pmatrix}
-400 &amp; 9 \\
-9 &amp; 9
-\end{pmatrix}
-\]</span> Hemos escogido una desviación típica de 20 respecto a X_{1} lo cual es razonable teniendo en cuenta que su media es 70 y 3 respecto a X_{2} ya que la media es 7</p>
-<p>Ahora hacemos una simulación para calcular los valores:</p>
-<ol start="2" type="a">
+<li><p>Genera una muestra simulada de tamaño <span class="math inline">\(n\)</span> de la distribución <span class="math inline">\(N_2(\boldsymbol{\mu}, \boldsymbol{\Sigma})\)</span> (elige unos valores razonables para <span class="math inline">\(\boldsymbol{\mu}\)</span> y <span class="math inline">\(\boldsymbol{\Sigma}\)</span>).</p></li>
 <li><p>Calcula la media muestral <span class="math inline">\(\bar{\mathbf{X}}\)</span>, la matriz de covarianzas <span class="math inline">\(\mathbf{S}\)</span> y el estadístico de Hotelling <span class="math inline">\(T^2\)</span>.</p></li>
 <li><p>Transforma <span class="math inline">\(T^2\)</span> a la escala F usando la distribución <span class="math inline">\(F_{p,\,n-p}\)</span> y calcula el p-valor del contraste para un nivel de significación <span class="math inline">\(\alpha = 0.05\)</span>.</p></li>
+<li><p>Decide si se rechaza o no <span class="math inline">\(H_0\)</span>.</p></li>
+<li><p>Interpreta el resultado en el contexto del problema: ¿parece que el vector medio real de la población difiere de <span class="math inline">\(\boldsymbol{\mu}_0\)</span>?</p></li>
 </ol>
-<p>Sabemos que:</p>
+<section id="solución" class="level3">
+<h3 class="anchored" data-anchor-id="solución">Solución</h3>
+<ol type="a">
+<li>Vamos a generar una muesttra de tamaño <span class="math inline">\(n = 100\)</span> que siga una distribución <span class="math inline">\(N_2(\boldsymbol{\mu}, \boldsymbol{\Sigma)\)</span>.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4627</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># tamañoo de la muestra</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># tenemos dos variables</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span> <span class="dv">2</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># vector de dirección</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">72</span>, <span class="dv">8</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">400</span>, <span class="dv">9</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                  <span class="dv">9</span>,  <span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>correlacion<span class="ot">=</span><span class="dv">9</span><span class="sc">/</span>(<span class="dv">20</span><span class="sc">*</span><span class="dv">2</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>correlacion</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.225</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>muestra <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(n,mu,sigma)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(muestra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practica_inferencia_multivariante_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Estos valores tienen sentido, ya que el rendimiento suele tener más variabilidad que la satisfacción, las covarianzas son positivas, lo cual tiene sentido considerando nuestras variables rendimiento y satisfacción laboral. Además, la correlación en este caso es <span class="math inline">\(Cov(x1,x2)/sd(x1)*sd(x2)=0.225\)</span> , o sea una correlación positiva entre ambas variables, que tiene sentido, ya que podemos deducir que cuanto más rendimiento hay, mayor satisfacción laboral tiene el empleado</p>
+<ol start="2" type="a">
+<li>Vamos ahora a calcular la media muestral,</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>media_col <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(muestra)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>media_col</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 72.638296  8.280235</code></pre>
+</div>
+</div>
+<p>Calculamos la matriz de covarianza,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">cov</span>(muestra)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>covar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]     [,2]
+[1,] 313.972665 3.964599
+[2,]   3.964599 3.844401</code></pre>
+</div>
+</div>
+<p>Calculamos el estadístico de Hotelling,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># diferencia de medias</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> media_col <span class="sc">-</span> mu</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>delta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6382961 0.2802348</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>T2 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(n <span class="sc">*</span> <span class="fu">t</span>(delta) <span class="sc">%*%</span> <span class="fu">solve</span>(covar) <span class="sc">%*%</span> delta)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>T2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.082124</code></pre>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Vamos a transformar el estadístico a la escala de F. Sabemos que:</li>
+</ol>
 <p><span class="math display">\[
 T^2 = n (\bar{\mathbf{X}} - \boldsymbol{\mu}_0)^\top \mathbf{S}^{-1} (\bar{\mathbf{X}} - \boldsymbol{\mu}_0)
-\]</span></p>
-<p><span class="math display">\[
+\]</span> <span class="math display">\[
 F = \frac{n - p}{p (n - 1)} T^2 \sim F_{p,\, n-p}
-\]</span> Por lo que:</p>
+\]</span></p>
+<p>Por lo que, podemos aproximar la <span class="math inline">\(T^2\)</span> por una fisher <span class="math inline">\(F_{2,\,98}\)</span>:</p>
 <p><span class="math display">\[
 F = \frac{100 - 2}{2·99} T^2 \sim F_{2,\, 98}
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">=</span><span class="dv">2</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n<span class="ot">=</span><span class="dv">100</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>p_valor <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>((n <span class="sc">-</span> p) <span class="sc">/</span> (p <span class="sc">*</span> (n <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> T2, <span class="at">df1 =</span> p, <span class="at">df2 =</span> n <span class="sc">-</span> p)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>p_valor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>F_dist <span class="ot">&lt;-</span> ((n <span class="sc">-</span> p) <span class="sc">/</span> (p <span class="sc">*</span> (n <span class="sc">-</span> <span class="dv">1</span>)))<span class="sc">*</span>T2</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>F_dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          [,1]
-[1,] 0.3551295</code></pre>
+<pre><code>[1] 1.030546</code></pre>
+</div>
+</div>
+<p>Calculamos el p-valor con un nivel de significación <span class="math inline">\(\alpha = 0.05\)</span>,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> p</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> n <span class="sc">-</span> p</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>p_valor <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">pf</span>(F_dist, df1, df2)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>p_valor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3606459</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>F_crit <span class="ot">&lt;-</span> <span class="fu">qf</span>(<span class="dv">1</span> <span class="sc">-</span> alpha, df1, df2)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>F_crit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.089203</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>reject <span class="ot">&lt;-</span> (p_valor <span class="sc">&lt;</span> alpha)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>reject</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
 </div>
 </div>
 <ol start="4" type="a">
@@ -352,54 +299,6 @@ F = \frac{100 - 2}{2·99} T^2 \sim F_{2,\, 98}
 <li>Interpreta el resultado en el contexto del problema: ¿parece que el vector medio real de la población difiere de <span class="math inline">\(\boldsymbol{\mu}_0\)</span>?</li>
 </ol>
 <p>Como el p-valor es alto (<span class="math inline">\(p = 0.355\)</span>), no rechazamos <span class="math inline">\(H_0\)</span> al nivel de significación <span class="math inline">\(\alpha = 0.05\)</span>. Esto indica que no hay evidencia estadística suficiente para afirmar que el vector medio <span class="math inline">\(\boldsymbol{\mu}\)</span> de la población difiere de <span class="math inline">\(\boldsymbol{\mu}_0\)</span>.</p>
-</section>
-<section id="problema-5" class="level2">
-<h2 class="anchored" data-anchor-id="problema-5">Problema 5</h2>
-<p>Un laboratorio de psicología quiere comparar el perfil cognitivo medio de dos grupos de estudiantes universitarios: los que duermen al menos 8 horas diarias y los que duermen menos de 6 horas.</p>
-<p>A cada participante se le administran dos pruebas:</p>
-<ul>
-<li><span class="math inline">\(X_1\)</span>: tiempo de reacción (en milisegundos, menor es mejor),</li>
-<li><span class="math inline">\(X_2\)</span>: puntuación de memoria a corto plazo (de 0 a 20, mayor es mejor).</li>
-</ul>
-<p>Se asume que cada grupo sigue una distribución normal bivariante con igual matriz de covarianzas <span class="math inline">\(\boldsymbol{\Sigma}\)</span>:</p>
-<p><span class="math display">\[
-\mathbf{X}_1 \sim N_2(\boldsymbol{\mu}_1, \boldsymbol{\Sigma}), \qquad
-\mathbf{X}_2 \sim N_2(\boldsymbol{\mu}_2, \boldsymbol{\Sigma}).
-\]</span></p>
-<p>Se desea contrastar la hipótesis</p>
-<p><span class="math display">\[
-H_0: \boldsymbol{\mu}_1 = \boldsymbol{\mu}_2
-\quad \text{frente a} \quad
-H_1: \boldsymbol{\mu}_1 \neq \boldsymbol{\mu}_2.
-\]</span></p>
-<p><em>Datos simulados:</em></p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 55%">
-<col style="width: 31%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Grupo</th>
-<th style="text-align: right;"><span class="math inline">\(X_1\)</span> (tiempo reacción, ms)</th>
-<th style="text-align: right;"><span class="math inline">\(X_2\)</span> (memoria)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Dormir ≥ 8h</td>
-<td style="text-align: right;">268, 275, 290, 260, 280, 295, 300, 285, 270, 310</td>
-<td style="text-align: right;">15, 14, 17, 16, 15, 18, 17, 16, 15, 17</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Dormir &lt; 6h</td>
-<td style="text-align: right;">305, 320, 330, 310, 325, 335, 340, 315, 310, 330</td>
-<td style="text-align: right;">12, 11, 10, 13, 12, 11, 10, 12, 11, 10</td>
-</tr>
-</tbody>
-</table>
-<p>Contrasta la hipótesis anterior con un nivel de significación <span class="math inline">\(\alpha = 0.05\)</span> e interpreta los resultados en el contexto del problema.</p>
 </section>
 </section>
 
