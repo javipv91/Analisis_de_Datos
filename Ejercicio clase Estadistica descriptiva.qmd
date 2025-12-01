@@ -18,6 +18,8 @@ Una empresa quiere analizar si existe relación entre las ventas de sus producto
 Leemos los datos
 
 ```{r, message=FALSE}
+library(GGally)
+library(tidyverse)
 library(readr)
 datos_empresa <- read_csv("~/Desktop/datos_empresa.csv")
 View(datos_empresa)
