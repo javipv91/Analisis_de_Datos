@@ -1,0 +1,142 @@
+---
+title: "Ejercicios de Estadística descriptiva multivariante"
+format:
+  html:
+    theme: lumen
+    toc: true
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(GGally)
+library(tidyverse)
+```
+
+## Ejercicio
+
+Una empresa quiere analizar si existe relación entre las ventas de sus productos, la inversión en publicidad y la satisfacción del cliente. Los datos que corresponden a las ventas en miles de unidades, el gasto en publicidad en miles de euros y la puntuación de satisfacción del cliente en una escala de 1 a 10 para 15 productos, los puedes descargar en el siguiente enlace: [datos empresa](https://github.com/igmuib/Practica_AD/blob/main/datos_empresa.csv)
+
+Leemos los datos
+
+```{r, message=FALSE}
+library(readr)
+datos_empresa <- read_csv("~/Desktop/datos_empresa.csv")
+View(datos_empresa)
+library(tidyverse)
+glimpse(datos_empresa)
+```
+
+### Apartado a
+
+Calcula, por un lado con formulación matricial y, por otro, mediante instrucciones en R/tidyverse, el vector de medias y la matriz de covarianzas para las variables cuantitativas del conjunto datos_empresa. A continuación, interpreta los resultados en el contexto del problema.
+
+#### Respuesta
+
+Con R/tidyverse:
+```{r}
+# Medias de las variables cuantitativas:
+media_ventas=mean(datos_empresa$Ventas)
+media_publicidad=mean(datos_empresa$Publicidad)
+media_satisfaccion=mean(datos_empresa$Satisfaccion_cliente)
+
+media_ventas
+media_publicidad
+media_satisfaccion
+
+# Matriz de covarianzas:
+
+cov(dplyr::select(datos_empresa, Ventas, Publicidad, Satisfaccion_cliente))
+
+
+```
+Ahora con formulacion matrcial:
+
+```{r}
+X=cbind(datos_empresa$Ventas,datos_empresa$Publicidad,datos_empresa$Satisfaccion_cliente)
+n=nrow(X)
+J=matrix(1,n,n)
+Id=diag(n)
+
+H=Id-1/n*J
+datos_centrados=H%*%X
+S=1/n*t(X)%*%H%*%X
+S
+
+uno = matrix(1, n, 1)
+
+media_ventas=1/n* t(X[,1])%*%uno
+media_publicidad=1/n* t(X[,2])%*%uno
+media_satisfaccion=1/n* t(X[,3])%*%uno
+
+media_ventas
+media_publicidad
+media_satisfaccion
+
+
+```
+
+
+
+
+### Apartado b
+
+Calcula, por un lado con formulación matricial y, por otro, mediante instrucciones en R/tidyverse la matriz de correlaciones. Presenta una visualización de ella con la librería `GGally`y la función `ggpairs()`. Interpreta el resultado en el contexto del problema.
+
+### Respuesta
+
+```{r}
+cor(dplyr::select(datos_empresa, Ventas, Publicidad, Satisfaccion_cliente), method = "pearson")   
+cor(dplyr::select(datos_empresa, Ventas, Publicidad, Satisfaccion_cliente), method = "spearman")  
+cor(dplyr::select(datos_empresa, Ventas, Publicidad, Satisfaccion_cliente), method = "kendall")    ordinal
+
+```
+
+Ahora de manera matrcial:
+
+```{r}
+# Matriz de datos 
+X <- cbind(datos_empresa$Ventas,
+           datos_empresa$Publicidad,
+           datos_empresa$Satisfaccion_cliente)
+
+n <- nrow(X)
+J <- matrix(1, n, n)
+Id <- diag(n)
+H <- Id - (1/n) * J
+
+# Matriz de covarianzas
+S <- (1/n) * t(X) %*% H %*% X
+
+# Matriz diagonal de desviaciones estándar
+D <- diag(sqrt(diag(S)))
+
+# Matriz de correlaciones
+R <- solve(D) %*% S %*% solve(D)
+
+R
+ggpairs(dplyr::select(datos_empresa, Ventas, Publicidad, Satisfaccion_cliente))
+```
+Como podemos ver la correlacion es casi 1 por lo que son bastante parecidas y esto se puede ver en que son casi rectas los graficos debajo a la diagonal.
+
+### Apartado c
+
+Define una variable compuesta $Y=Xa$ que agregue Ventas, Publicidad y Satisfaccion_cliente mediante un vector de pesos $a$ justificados con criterio empresarial, por ejemplo, un índice de rendimiento que priorice Ventas, o un índice de intensidad de marketing que dé mayor peso a Publicidad. Calcula por formulación matricial su vector de medias y matriz de covarianzas muestra, interpreta lo obtenido en el contexto del problema.
+
+#### Respuesta
+
+### Apartado d
+
+Usa el teorema de la dimensión para ofrecer una breve interpretación sobre la redundancia y la dispersión de `datos_empresa`.
+
+#### Respuesta
+
+### Apartado e
+
+Para estos datos calcula la varianza total y la varianza generalizada y explica qué mide cada una. Comenta cómo cambian si aumentan las correlaciones entre las variables o si se reescala alguna variable.
+
+#### Respuesta
+
+### Apartado f
+
+Selecciona la medida de distancia más adecuada para identificar qué observaciones multivariantes son similares y cuáles no.
+
+#### Respuesta
