@@ -387,13 +387,6 @@ Podrías considerar la misma ya que tienen la misma forma el mismo tamaño, aunq
 ### 7. ¿Podemos afirmar que la matriz $\mathbf{S}$ de los pinguinos Adelie sigue una distribución de Wishart?
 
 
-
-### 8. Comprueba por simulación que $(n-1)\mathbf{S}$, obtenida a partir de muestras de una normal multivariante, sigue aproximadamente una distribución de Wishart. ¿Coinciden las medias empíricas de los elementos de $(n-1)\mathbf{S}$ con los valores esperados según $(n-1)\boldsymbol{\Sigma}$? ¿Qué ocurre si se aumenta o reduce $n$? ¿Y si se cambia la matriz $\boldsymbol{\Sigma}$?
-
-### 9. Genera una muestra de tamaño $n$ y dimensión $p$ de una distribución normal multivariante. Calcula el estadístico de Hotelling $T^2$ y transforma su valor a la escala de una F mediante la relación conocida entre ambas distribuciones. Explora cómo varía el valor de $T^2$ al modificar: el tamaño muestral $n$,la dimensión $p$,la distancia entre el vector de medias y un valor de referencia $\boldsymbol{\mu}_0$. Representa gráficamente el comportamiento de $T^2$ o de su equivalente en la escala F cuando cambias estos parámetros.
-
-### 10. Simula ahora varios grupos con medias distintas pero con la misma matriz de covarianzas, y calcula el valor de Wilks $\Lambda$ y su transformación a F. Usa el siguiente código como base:
-
 ```{r}
 library(MASS)
 # Ejemplo con 3 grupos simulados
@@ -410,11 +403,7 @@ modelo <- manova(cbind(X1, X2) ~ grupo, data = D)
 summary(modelo, test = "Wilks")
 ```
 
-##### 10a. Calcula manualmente las matrices $\mathbf{W}$, $\mathbf{B}$ y $\mathbf{T}$, y el cociente $\Lambda = |\mathbf{W}| / |\mathbf{T}|$.
 
-##### 10b. Comprueba que la F obtenida en la salida de summary(modelo, test = "Wilks") coincide con la transformación aproximada de $\Lambda$.
-
-##### 10c. Repite la simulación con medias más separadas y observa cómo varían $\Lambda$ y F.
 
 
 
