@@ -1,0 +1,385 @@
+---
+title: "Taller evaluado II"
+date: "2025-10-17"
+format:
+  html:
+    toc: true
+    toc-depth: 5
+lang: es
+---
+
+**Nombre y apellido de cada miembro del grupo**
+
+* Javier Peña Vior 
+* Sara Blanco Sanz
+* Rubén López Cáceres
+
+
+
+```{r, message=FALSE, echo=FALSE}
+library("tidyverse")
+library("factoextra")
+library("ggplot2")
+library("cluster")
+```
+
+
+
+**Una consultora especializada en evaluación y gobernanza de sistemas de Inteligencia Artificial (IA) ha recopilado información de 240 organizaciones pertenecientes a los sectores de Salud y Educación que han incorporado sistemas de IA para apoyar la toma de decisiones y la automatización de procesos.**
+
+**Para cada organización se ha medido:**
+
+* `ID`: Identificador único de la organización/entidad observada.
+
+* `Sector`: Sector al que pertenece la organización (Salud o Educación).
+
+* `Implementacion`: Estado de despliegue de la solución de IA (Piloto o Producción).
+
+* `Precision`: Precisión del sistema en escala 0–100 (a mayor valor, mejor).
+
+* `Robustez`: Estabilidad del sistema ante cambios/ruido/datos distintos en escala 0–100 (a mayor valor, más robusto).
+
+* `Productividad`: Ganancia o nivel de productividad asociado al uso de IA en escala 0–100 (a mayor valor, mejor).
+
+
+* `Ahorro_tiempo`: Ahorro de tiempo atribuible a la IA en escala 0–100 (a mayor valor, más ahorro).
+
+* `Riesgo_etico`: Nivel de riesgo ético percibido en escala 0–100 (a mayor valor, más riesgo).
+
+* `Riesgo_legal`: Nivel de riesgo legal/regulatorio percibido en escala 0–100 (a mayor valor, más riesgo).
+
+* `Aceptacion_usuarios`: Grado de aceptación por parte de usuarios finales en escala 0–100 (a mayor valor, más aceptación).
+
+* `Coste`: Coste relativo del proyecto/solución en escala 0–100 (a mayor valor, mayor coste).
+
+
+**El objetivo del estudio es comprender patrones de adopción, similitudes entre organizaciones y posibles diferencias sistemáticas entre grupos.**
+
+**Los datos están disponibles en el archivo: "datos_taller_evaluado_2.csv"** 
+
+
+
+#### 1. Realizad un análisis exploratorio multivariante del conjunto de datos. Para ello presentad e interpretad cada uno de los gráficos solicitados a continuación, relacionándolos  con el contexto del problema y destacando los patrones, asociaciones o diferencias relevantes que aporten información útil para comprender el uso de la IA en los distintos sectores (1 punto)
+
+*  **Una matriz de gráficos de dispersión que incluya las correlaciones entre las variables: `Precisión`, `Robustez`,  `Productividad`, `Ahorro_tiempo` y `Aceptacion_usuarios`por `Sector`**
+
+```{r}
+library(readr)
+datos_taller_evaluado_2 <- read_csv("~/Desktop/datos_taller_evaluado_2.csv")
+print(datos_taller_evaluado_2)
+head(datos_taller_evaluado_2)
+```
+
+```{r}
+library(readr)
+perfil_Edu <- read_csv("~/Desktop/perfil_Edu.csv")
+head(perfil_Edu)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+
+options(GGally.progress = FALSE)
+
+library(GGally)
+library(dplyr)
+
+datos_taller_evaluado_2$Sector <- as.factor(datos_taller_evaluado_2$Sector)
+
+ggpairs(
+  datos_taller_evaluado_2,
+  columns = c(
+    "Precision",
+    "Robustez",
+    "Productividad",
+    "Ahorro_tiempo",
+    "Aceptacion_usuarios"
+  ),
+  aes(color = Sector, alpha = 0.7),
+  upper = list(continuous = wrap("cor", size = 4)),
+  lower = list(continuous = wrap("points", size = 1.5)),
+  diag = list(continuous = wrap("densityDiag"))
+)
+
+
+```
+
+Podríamos clasificar las variables en dos subgrupos. Siendo uno de los subgrupos los que presentan una clara correlació lineal directa y el otro los que muestran un gráfico de puntos dispersos sin estructura clara. 
+
+A nivel de distribuciones podemos ver que siguen en su mayoría una distribución similar a la normal, binormal o trinormal. 
+
+Las que tienen correlación lineal serían precisión-robustez, productividad-ahoro tiempo, productiviad-aceptación usuario y aceptación usuario-ahorro tiempo. 
+A nivel numérico, todo los datos presentan una correlación de entorno al 0.7-0.8 y dos o tres estrellas. Es decir, una correlación lineal relevante.No se observan claras diferencias entre los grupos de salud y de educación. Sí que hay que destacar que las correlaciones de educación son en todos los casos ligeramente menores que las del sector de la salud. 
+
+El resto no tienen una correlación entre ellas clara. A nivel numérico inician el valors próximos a 0 (positivos o negativos) y alcanzan un máximo de 0.5, siendo menos significativas que en caso anterior (algunos no tienen estrellas). Excepto en el caso robustez-aceptación usuarios, en todo los casos observamos que el grupo asociado a la educación tiene una correlación ligeramente menor que el grupo asociado a la salud. 
+
+En el contexto del problema, observamos que la robustez y la precisión es lógico que tenga una relación ya que cambios en los resultados produciría peores resultados, y viceversa. Un argumento similar nos serviría para la productividad y el ahorro de tiempo. También es lógico que a los usuarios les guste más un programa con mejores resultados y que tarde menos en dar respuesta.
+ 
+* **Una matriz de gráficos de dispersión que incluya las correlaciones entre las variables: `Riesgo_etico`, `Riesgo_legal` y `Coste` por `Sector`**
+
+```{r}
+ggpairs(
+  datos_taller_evaluado_2,
+  columns = c(
+    "Riesgo_etico",
+    "Riesgo_legal",
+    "Coste"),
+  aes(color = Sector, alpha = 0.7),
+  upper = list(continuous = wrap("cor", size = 4)),
+  lower = list(continuous = wrap("points", size = 1.5)),
+  diag = list(continuous = wrap("densityDiag"))
+)
+```
+
+Podemos ver una clara correlación lineal de las variables dos a dos, ya que las gráficas visualmente representan una recta creciente en los tres gráficos. Podemos ver que esta correlación sucede tanto en educación como en salud y que los datos no presentan una clara diferencia entre grupos. Más bien se observa una heterogeneidad de los datos entre grupos. 
+
+En relación a las distribuciones, podemos ver que todas siguen una representación similar a la binormal. 
+
+A nivel numérico observamos que los datos presentan una correlación superior al 0.67 alcanzando casi el 0.9 (entre las variables de riegos). Además todas ellas tienen tres estrellas lo que significa que todas ellas son significativas. En estas variables observamos que, al contrario que las variables anteriores, el grupo asociado a la salud presenta unos valores de correlación ligeramente menores que el de la salud. 
+
+
+Si nos transladamos al contexto del problema podemos ver que los riesgos tanto éticos como legales impactan en el coste del proyecto haciendo que éste sea más caro. El lógico que esto suceda ya que supone realizar más análisis y evaluaciones para cercionarse de que sea seguro para los usuarios.
+
+#### 2. Considerad el vector multivariante $\mathbf{Y}$, definido a continuación,  para llevar a cabo el contraste de comparación de medias entre los sectores Educación y Salud, tal y como se especifica más adelante.
+$$
+\mathbf{Y}=
+\begin{aligned}[t]
+(&\texttt{Precision},\ \texttt{Robustez},\ \texttt{Productividad},\ \texttt{Ahorro\_tiempo},\ \texttt{Aceptacion\_usuarios},\\
+ &\texttt{Riesgo\_etico},\ \texttt{Riesgo\_legal},\ \texttt{Coste})
+\end{aligned}
+$$
+
+$$
+H_0:\ \boldsymbol{\mu}_{\text{Edu}}=\boldsymbol{\mu}_{\text{Salud}}
+\qquad \text{frente a} \qquad
+H_1:\ \boldsymbol{\mu}_{\text{Edu}}\neq \boldsymbol{\mu}_{\text{Salud}}.
+$$
+
+##### a. ¿Qué supuestos deben cumplirse y mencionad cómo podríais verificarlos para que sea válido aplicar uno de los test estudiados en la asignatura? (1 punto)
+
+Para que el contraste de medias multivariante sea válido, se deben cumplir las siguientes condiciones:
+
+- Las variables que vamos a estudiar, Educación y salud, deben ser independientes. 
+- Ambas variables tienen que ser normales multivariantes con igualdad de matrices de varianzas/covarianzas. 
+
+Para ver que tenemos indicios de poder considerar las variables como normales multivariantes es comprobar si la Distancia de Mahalanobis al cuadrado es una Chi-cuadrado.
+
+Para ver que las Matrices de varianzas /covarianzas son iguales y se comportan igual podemos hacer un mapa de calor para compararlas.
+
+Por el enunciado podemos interpretar que son independientes, pero sino podríamos ver que la covarianza es 0 y al ser normales la independencia ocurre si y solo si la covarianza es 0.
+
+
+
+##### b. Escribid un código en R que implemente el contraste de comparación de medias multivariantes apropiado entre los sectores Educación y Salud para las variables consideradas. El código debe calcular y mostrar el vector de medias muestrales de cada sector; ejecutar el contraste. Luego,  reportad el p-valor y tomar una decisión para $\alpha=0.05$ en el contexto del problema (2 puntos)
+
+Vamos a hacer un test de comparación de medias de Hotelling.
+
+Preparamos los datos: 
+
+
+```{r}
+
+library(dplyr)
+library(Hotelling)
+
+
+vars <- c("Precision", "Robustez", "Productividad", "Ahorro_tiempo", "Aceptacion_usuarios")
+
+# Filtrar solo los sectores Educación y Salud
+datos_ES <- datos_taller_evaluado_2 %>%
+  filter(Sector %in% c("Educación", "Salud")) %>%
+  select(Sector, all_of(vars)) %>%
+  mutate(across(all_of(vars), ~ as.numeric(as.character(.)))) 
+
+
+datos_educacion <- subset(datos_ES, Sector == "Educación")
+num_educacion <- datos_educacion[, sapply(datos_educacion, is.numeric)]
+media_educacion <- colMeans(num_educacion, na.rm = TRUE)
+
+datos_salud <- subset(datos_ES, Sector == "Salud")
+num_salud <- datos_salud[, sapply(datos_salud, is.numeric)]
+media_salud <- colMeans(num_salud, na.rm = TRUE)
+
+cat("Vector de medias muestrales - Educación:\n")
+print(media_educacion)
+cat("\nVector de medias muestrales - Salud:\n")
+print(media_salud)
+```
+Como podemos ver los vectores de medias son diferentes, pero de todas formas hacemos el test de Hotelling para calcular el p-valor para $\alpha=0.05$ que es lo que nos piden:
+
+```{r}
+test_hotelling <- hotelling.test(
+  datos_educacion[, vars],
+  datos_salud[, vars]
+)
+print(test_hotelling)
+
+```
+
+Por lo tanto rechazamos la hipótesis nula ya que el p-valor es 0. Esto quiere decir que existe, como mínimo, alguna coordenada de los vectores de medias que son diferentes (la diferencia es grande).
+
+
+
+#### 3. Representad de manera reducida los perfiles multivariantes del uso de IA del sector Educación y del sector Salud (por separado). Interpretad  las componentes retenidas, explicando su posible significado práctico en el contexto del problema. Justificad bien el procedimiento (3 puntos)
+
+Primero vamos a calcular los valores principales asociados a nuestros datos después de ver en ejercicios anteriores las condiciones de correlación.
+
+Iniciemos separando los valores del df en Educación y Salud. Comenzaremos realizando el PCA para Educación.
+
+```{r}
+head(datos_taller_evaluado_2)
+
+datos_educacion  <- datos_taller_evaluado_2 %>% filter(Sector == "Educación")
+datos_salud <- datos_taller_evaluado_2 %>% filter(Sector == "Salud")
+
+
+datos_pca_educacion = prcomp(datos_educacion[,4:11], scale = TRUE)
+lambda = get_eigenvalue(datos_pca_educacion)
+lambda
+```
+
+
+Podemos observar que el primer vap nos da un 55.98% de la información sobre la varianza total. Si añadimos el segundo vap obtenemos el 81.45% de la información. Lo ideal sería considerar las dos primeras componentes sería suficiente para describir bastante bien los datos. 
+
+
+Alternativamente, 
+```{r}
+fviz_eig(datos_pca_educacion, addlabels = TRUE, ylim=c(0,100))
+```
+
+
+
+Podemos ver un claro cambio de tendencia en las dimensiones 2 y 3. Por lo que siguiendo la "regla del codo" como una de éstas dos dimensines podríamos obtener una representación de la variabilidad de los datos suficientemente buena.
+
+
+Representemos ahora el gráfico con las componentes principales en dos dimensiones.
+```{r}
+fviz_pca_var(datos_pca_educacion, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE) 
+```
+
+ 
+A primera vista nos damos cuenta de que todas las variables están bien representadas ya que se alejan suficiente del orgien de coordenadas de nuestro gráfico.
+
+Observamos que la variable más contribuyen es la de ahorro de tiempo. Mientras que la que menos contribuye sería la asociada a la producción. 
+ 
+Por lo que podemos ver que lo que más interesa en este sector sería ahorrar los máximos costes obteniendo una buena precisión y ahorro de tiempo. Los resultados asociados a la robustez y la productividad no son muy importantes, prefien  usar la IA pero no tanto que esta resulte útil. 
+
+Además Coste y precisión podemos ver que son mas o menos ortogonales y por tanto independientes a ahorro de tiempo, siendo estas tres las que más contribuyen a los datos. 
+
+Notemos además que todas las componentes apuntan hacia la derecha, por lo que, los coeficientes de la primera componente son todos positivos. Los valores que caigan en la región izquierda están peor representados.
+
+Repetimos para el sector de salud.
+
+```{r}
+datos_pca_salud = prcomp(datos_salud[,4:11], scale = TRUE)
+lambda = get_eigenvalue(datos_pca_salud)
+lambda
+```
+
+
+
+Podemos observar que el primer vap nos da un 58.52% de la información sobre la varianza total. Si añadimos el segundo vap obtenemos el 80.22% de la información. Lo ideal sería considerar las dos primeras componentes sería suficiente para describir bastante bien los datos. 
+
+```{r}
+fviz_eig(datos_pca_salud, addlabels = TRUE, ylim=c(0,100))
+```
+
+Podemos ver un claro cambio de tendencia en las dimensiones 2 y 3. Por lo que siguiendo la "regla del codo" como una de éstas dos dimensines podríamos obtener una representación de la variabilidad de los datos suficientemente buena.
+
+```{r}
+fviz_pca_var(datos_pca_salud, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE) 
+```
+
+Podemos ver que nuevamente todas las variables están bien representadas por estar lejos del origen de coordenadas. Por otro lado, en este sector lo más importante sería la precisión y la robustez así como un ahorro de tiempo (ya que son las de color mas cercano al rojo). Es decir, les interesa obtener los mejores resultados posibles intentando minimizar los tiempos de espera. Esto supondría una mejora del servicio a los pacientes, pudiendo atender mejor a un mayor número de personas. Por otra parte, el factor que menos contribuye sería el coste. Significando que no les importa hacer un mayor gasto si esto hace que podamos salvar a más pacientes.
+
+Además Robustez y precisión podemos ver que son mas o menos ortogonales y por tanto independientes a ahorro de tiempo, siendo estas tres las que más contribuyen a los datos. 
+
+Notemos además que todas las componentes apuntan hacia la derecha, por lo que, los coeficientes de la primera componente son todos positivos. Los valores que caigan en la región izquierda están peor representados.
+
+
+#### 4. A continuación os presentamos dos bloques de código. Explicad de forma breve qué procedimiento estadístico se aplica en cada bloque. Después, interpretad los resultados en el contexto del problema: describid qué perfiles de uso de IA emergen en el sector Educación y en qué se diferencian entre sí. Por último, compara ambos bloques y justificad cuál de los dos resultados consideráis más adecuado para describir los perfiles (3 puntos)
+
+
+##### Bloque A
+```{r}
+datos <- read.csv("~/Desktop/datos_taller_evaluado_2.csv")
+vars <- c("Precision","Robustez","Productividad",
+          "Ahorro_tiempo","Aceptacion_usuarios",
+          "Riesgo_etico","Riesgo_legal","Coste")
+
+X_Edu <- datos %>%
+  filter(Sector == "Educación") %>%
+  select(all_of(vars)) %>%
+  as.data.frame()
+
+X_Edu_sc   <- scale(X_Edu)
+fviz_nbclust(X_Edu_sc, FUNcluster = cluster::pam, method = "wss") +
+  ggtitle("PAM - WSS (Educación)")
+
+set.seed(123)
+pam_Edu <- cluster::pam(X_Edu_sc, k = 4) 
+pam_Edu
+
+fviz_cluster(pam_Edu, data = X_Edu_sc, 
+             ellipse.type = "t", repel = TRUE) +
+  theme_bw() + theme(legend.position = "none") +
+  ggtitle("Clustering PAM (Educación)")
+
+perfil <- read.csv("~/Desktop/perfil_Edu.csv")$x
+table(perfil, pam_Edu$clustering)
+```
+
+##### Bloque B
+```{r, warning=FALSE}
+matriz_distancias <- dist(X_Edu_sc, method = "euclidean")
+h_cluster_average <- hclust(d = matriz_distancias, method = "average")
+cor(matriz_distancias, cophenetic(h_cluster_average))
+fviz_dend(h_cluster_average, k = 4, cex = 0.4, rect = TRUE,
+          main = "Dendrograma (average) - Educación")
+average_clusters <- cutree(h_cluster_average, k = 4)
+table(perfil, average_clusters)
+```
+
+
+
+En este código intentamos agrupar los datos del sector educativo en clusters.
+En el primer bloque usamos el método de PAM (k-medoides) utilizando 4 clusters según el método del codo.
+Como hay más de 2 variables, se están representando las 2 primeras componentes de un PCA que explica más de un 80% de la varianza de los datos, por lo que es una buena representación en este sentido.
+Por otro lado, viendo los clusters observamos que no hay ningún cluster homogéneo ya que se solapan entre ellos, y eso lo podemos observar en la matriz de confusión.
+
+Por otro lado, en el segundo bloque hacemos un clustering jerárquico y lo representamos mediante un dendograma.
+En este caso, la distancia utilizada es la distancia euclídea y utilizamos el enlace medio. Al igual que antes, utilizamos también 4 clusters.
+Además, vemos que la distancia cophenetic es 0.7, que es un valor grande y cercano a 1, por lo que también es un buen clustering.
+Mirando el dendograma, podemos ver que hay un cluster con muchos elementos (el verde), 2 clusters más pequeños, pero de un tamaño razonable (el azul y el morado), y un último clustering, el rojo, que solo contiene 2 elementos y que está a mucha distancia del resto de elementos, por lo que podemos suponer que son outliers.
+Además, analizando la distribución de los clusters mediante la matriz de confusión vemos que son unos clusters más homogéneos que usando k-medoides.
+
+Teniendo en cuenta que ambos clusters representan bien los datos, nos quedamos con los clusters dados por el dendograma ya que hemos visto que son más homogéneos que los clusters dados por el método de k-medoides.
+
+Además, en el contexto del problema vemos que las IAs de perfil 1 son IAs de baja precisión, pero que tienen poco coste y riesgo ético, por lo que son bastante aceptadas.
+Las IAs de perfil 2 son las más aceptadas de todas, ya que son bastante precisas y ahorran bastante tiempo, a pesar de tener mayores riesgos y coste.
+Las IAs de perfil 3 son IAs muy precisas, robustas y productivas, aunque sus altos riesgos y coste hacen que sean algo menos aceptadas.
+Por último, las IAs de perfil 4 son las menos aceptadas, ya que son poco productivas y consumen mucho tiempo, a pesar de ser las que menor riesgo tienen.
+
+La matriz asociada al algoritmo de PAM tan solo representa de forma muy clara el perfil 3 asociada al clúster 1. 
+La matriz del dendograma tiene el primer clúster que representa muy bien los datos del perfil 1, el cuarto que representa los outliers y el segundo y tercero que representan muy mal los datos.
+
+
+Teniendo en cuenta que ambos clusters representan mal los datos, el realizado por PAM sería mejor a nivel computacional. Por lo que podríamos escoger este. Si nos interesa una ligera mejoría de la representación podríamos usar el asociado al dendograma.
+
+
+
+
+**Instrucciones para entregar:**
+Un miembro del grupo deberá subir a la tarea de Aula Digital, un único archivo PDF que incluya:  
+1) los nombres de todos los integrantes, y  
+2) un enlace al repositorio de GitHub (de cualquiera de los integrantes).  
+
+El repositorio deberá contener, como mínimo:  
+- el archivo fuente `.qmd`,  
+- la salida `.html`, y  
+- un `README.md` que describa con claridad el propósito del proyecto y su estructura.
+
+
